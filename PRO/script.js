@@ -41,19 +41,27 @@ function generator(matLen, gr, grEat, pr, hello, pitbul,arj) {
             matrix[x][y] = 5;
         }
     }
+        for (let i = 0; i < arj; i++) {
+            let x = Math.floor(Math.random() * matLen);
+            let y = Math.floor(Math.random() * matLen);
+            if (matrix[x][y] == 0) {
+                matrix[x][y] = 6;
+            }
+    }
     
     return matrix;
 }
 
 let side = 20;
 
-let matrix = generator(15, 30, 40, 6, 3, 8);
+let matrix = generator(15, 30, 40, 6, 3, 8, 9);
 
 let grassArr = []
 let grassEaterArr = []
 let predatorArr = []
 let helloArr = []
-let pitbularr = []
+let pitbulArr = []
+let arjArr = []
 
 function setup() {
     createCanvas(matrix[0].length * side, matrix.length * side);
@@ -75,7 +83,11 @@ function setup() {
                 helloArr.push(grE)
             } else if (matrix[y][x] == 5) {
                 let grE = new Pitbul(x, y)
-                pitbularr.push(grE)
+                pitbulArr.push(grE)
+            }
+            else if (matrix[y][x] == 6) {
+                let grE = new arj(x, y)
+                arjArr.push(grE)
             }
         }
     }
@@ -98,6 +110,9 @@ function draw() {
             } else if (matrix[y][x] == 5) {
                 fill('pink')
             }
+            else if (matrix[y][x] == 6) {
+                fill('Gold')
+            }
             rect(x * side, y * side, side, side)
         }
     }
@@ -116,6 +131,12 @@ function draw() {
         helloArr[i].mul()
         helloArr[i].eat()
     }
+
+    for (let i in arjArr) {
+        arjArr[i].mul()
+        arjArr[i].eat()
+    }
+
     for (let i in pitbularr) {
         if (grassArr.length < 10) {
             pitbularr[i].mulGrass()
@@ -123,7 +144,9 @@ function draw() {
         if (grassEaterArr.length < 10) {
             pitbularr[i].mulGrassEater()
         }
-        if (helloArr.length < 10)
+        if (helloArr.length < 10){
             pitbularr[i].mulHello()
+        }
+            
     }
 }
